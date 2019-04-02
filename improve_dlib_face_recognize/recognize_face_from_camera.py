@@ -3,6 +3,7 @@ import dlib
 import pandas as pd
 import numpy as np
 import cv2
+import json
 
 def read_face_feature_from_csv():
     all_face_feature_csv_path = './data/total.csv'
@@ -33,6 +34,7 @@ def compute_128D_distance(face_feature_1, face_feature_2):
 
 
 def recognize_face_from_camera():
+    name_path = './data/name_dict.json'
     recognize_face_tool_path = 'C:/Users/xsmile/AppData/Local/Programs/' \
                                'Python/Python36/Lib/site-packages/dlib/' \
                                'dlib_face_recognition_resnet_model_v1.dat'
@@ -78,10 +80,13 @@ def recognize_face_from_camera():
                         # 某个人脸与所有特征均值进行对比
                         compare = compute_128D_distance(capture_faces_feature[i], all_face_feature_mean[j])
                         if compare == 'same':
-                            if j == 0:
-                                face_name[i] = 'person_1'
-                            elif j == 1:
-                                face_name[i] = 'nanM'
+                            with open(name_path, 'r') as fi:
+                                name_dict = json.loads(fi.read())
+                                face_name[i] = name_dict[str(j)]
+                            # if j == 0:
+                            #     face_name[i] = 'person_1'
+                            # elif j == 1:
+                            #     face_name[i] = 'nanM'
             for k, position in enumerate(faces):
                 # 矩形框的颜色
                 rectangle_color = (255, 0, 0)

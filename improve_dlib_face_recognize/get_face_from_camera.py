@@ -5,6 +5,7 @@ from skimage import io
 import csv
 import pandas as pd
 import numpy as np
+import json
 
 def make_dir_for_img():
     img_path = './data/img_from_camera'
@@ -193,7 +194,24 @@ def all_feature_mean_into_csv():
         writer.writerow(feature_mean)
         print('{} 写入成功！'.format(feature_csv_path + '/' + csv_name))
 
+def write_name_to_json(nick_name):
+    name_path = './data/name_dict.json'
+    # if not os.path.exists(name_path):
+    #     os.makedirs(name_path)
+    if not os.path.exists(name_path):
+        with open(name_path, 'w') as fi:
+            # dump 将 python 对象写入 json
+            json.dump({}, fi)
+    with open(name_path, 'r') as fi:
+        # loads 将字符串转换为 python 对象
+        name_dict = json.loads(fi.read())
+        name_dict[str(len(name_dict))] = nick_name
+    with open(name_path, 'w') as fi:
+        json.dump(name_dict, fi)
+
 use_camera_save_img()
+nick_name = input('input your English nick name: ')
+write_name_to_json(nick_name)
 print('开始计算人脸特征值！')
 make_csv_dir()
 print('csv 存储文件夹创建成功！')
