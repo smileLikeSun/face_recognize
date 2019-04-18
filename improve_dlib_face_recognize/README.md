@@ -1,3 +1,7 @@
+### recognize_face_from_camera.py
+
+#### def computer_128_distance(array_1, array_2)
+
 这里直接使用的是欧式距离，其它也有用 余弦相似度 来做的
 欧式距离公式：
 
